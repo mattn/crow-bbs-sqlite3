@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>一行掲示板</title>
+  </head>
+  <body>
+    <h2>一行掲示板</h2>
+    <ul>
+      {{# posts}}
+      <li>{{id}}: {{text}}</li>
+      {{/ posts}}
+    </ul>
+    <form action="/post" method="post">
+      <input type="text" name="text"><input type="submit">
+    </form>
+  </body>
+</html>
