@@ -7,20 +7,20 @@ int
 main() {
   sqlite3 *db = nullptr;
   int r = sqlite3_open("bbs.db", &db);
-  if (SQLITE_OK!=r){
+  if (SQLITE_OK != r) {
     throw std::runtime_error("can't open database");
   }
   crow::SimpleApp app;
   crow::mustache::set_base(".");
 
   CROW_ROUTE(app, "/")
-  ([&]{
+  ([&] {
     crow::mustache::context ctx;
     const char *sql = "select id, text from bbs order by created";
     sqlite3_stmt *stmt = nullptr;
     sqlite3_prepare(db, sql, -1, &stmt, nullptr);
     int n = 0;
-    while (SQLITE_DONE != sqlite3_step(stmt)){
+    while (SQLITE_DONE != sqlite3_step(stmt)) {
       ctx["posts"][n]["id"] = (std::string) (char*) sqlite3_column_text(stmt, 0);
       ctx["posts"][n]["text"] = (std::string) (char*) sqlite3_column_text(stmt, 1);
       n++;
@@ -29,9 +29,8 @@ main() {
     return crow::mustache::load("bbs.html").render(ctx);
   });
 
-  CROW_ROUTE(app, "/post")
-      .methods("POST"_method)
-  ([&](const crow::request& req, crow::response& res){
+  CROW_ROUTE(app, "/post").methods("POST"_method)
+  ([&](const crow::request& req, crow::response& res) {
     crow::query_string params(std::string("?") + req.body);
     char* q = params.get("text");
     if (q == nullptr) {
