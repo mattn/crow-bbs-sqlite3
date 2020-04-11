@@ -1,4 +1,4 @@
 all : bbs
 
-bbs.exe : bbs.cxx
+bbs : bbs.cxx
 	g++ -std=c++14 -o bbs.exe -I. bbs.cxx -lws2_32 -lmswsock -lboost_system-mt -lsqlite3
